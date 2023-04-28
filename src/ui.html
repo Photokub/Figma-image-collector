@@ -1,25 +1,118 @@
-<h2>Пакетное создание PLU-карточек</h2>
-<p>PLU: <input id="plu" placeholder="PLU"></p>
-<p>Ссылка: <input id="link" placeholder="ссылки"></p>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../pages/ui.css">
+    <style>
+        body {
+            background-color: #F5F5F5;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+        }
+
+        .app__header {
+            font-family: Inter;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 40px;
+            color: #5A5A5A;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .form__input {
+            width: 100%;
+            height: 35px;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .form__btn-container{
+            padding: 20px 0 0 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 50%;
+        }
+
+        .form__button{
+            background: #007088;
+            width: 95px;
+            height: 40px;
+            color: #FFFF;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .form__error{
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            color: #E00043;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .form__error_active{
+            opacity: 0;
+            visibility: hidden;
+            transition: .2s;
+        }
+
+        .sign{
+            align-self: end;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 8px;
+            color: #AAAAAA;
+            padding-top: 30px;
+        }
 
 
-<button id="create">Create</button>
-<button id="cancel">Cancel</button>
+    </style>
+</head>
+<body class="app">
+<section class="app">
+    <h1 class="app__header">Image collector</h1>
+    <form class="form">
+        <input id="names_field" placeholder="Names" class="form__input">
+        <input id="links_field" placeholder="Links" class="form__input">
+        <span class="form__error">Ошибка: количество ссылок и имён не совпадает</span>
+        <div class="form__btn-container">
+            <button id="create" class='form__button'>Create</button>
+            <button id="cancel" class='form__button'>Reset</button>
+        </div>
+    </form>
+    <p class="sign">Developed by Aleksandr Kubyshkin</p>
+</section>
+</body>
 
 <script>
 
     const createBtn = document.getElementById('create')
-    const link = document.getElementById('link')
-    const plu = document.getElementById('plu')
+    const link = document.getElementById('links_field')
+    const plu = document.getElementById('names_field')
 
     function handleData(plu, link) {
         const pluValue = plu.value
         const linkValue = link.value
-        // const message = JSON.stringify({
-        //     plu: pluValue,
-        //     link: linkValue,
-        //     date: Date.now(),
-        // });
 
         const pluArr = pluValue.split(' ')
         const linkArr = linkValue.split(' ')
@@ -32,3 +125,4 @@
     }
 
 </script>
+</html>

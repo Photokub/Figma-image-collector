@@ -1,5 +1,7 @@
-figma.showUI(__html__);
-
+figma.showUI(__html__, {
+    width:500,
+    height: 360,
+});
 
 figma.ui.onmessage = pluginMessage => {
 
