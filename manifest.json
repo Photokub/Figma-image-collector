@@ -1,5 +1,5 @@
 {
-  "name": "1_MyFirstPlugin",
+  "name": "Image collector",
   "id": "1202904913339475076",
   "api": "1.0.0",
   "main": "dist/code.js",
