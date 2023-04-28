@@ -35,7 +35,9 @@ figma.ui.onmessage = pluginMessage => {
                 console.log(imgLink)
 
                 const rectangleObject = figma.createRectangle()
-                rectangleObject.resize(475, 400)
+                rectangleObject.resize(395, 320)
+                rectangleObject.x = 50
+                rectangleObject.y = 50
                 rectangleObject.fills = [
                     {
                         type: 'IMAGE',
