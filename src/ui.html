@@ -1,0 +1,34 @@
+<h2>Пакетное создание PLU-карточек</h2>
+<p>PLU: <input id="plu" placeholder="PLU"></p>
+<p>Ссылка: <input id="link" placeholder="ссылки"></p>
+
+
+<button id="create">Create</button>
+<button id="cancel">Cancel</button>
+
+<script>
+
+    const createBtn = document.getElementById('create')
+    const link = document.getElementById('link')
+    const plu = document.getElementById('plu')
+
+    function handleData(plu, link) {
+        const pluValue = plu.value
+        const linkValue = link.value
+        // const message = JSON.stringify({
+        //     plu: pluValue,
+        //     link: linkValue,
+        //     date: Date.now(),
+        // });
+
+        const pluArr = pluValue.split(' ')
+        const linkArr = linkValue.split(' ')
+
+        parent.postMessage({pluginMessage: {pluValue, linkValue, pluArr, linkArr}}, '*')
+    }
+
+    createBtn.onclick = () => {
+        handleData(plu, link)
+    }
+
+</script>
