@@ -12,15 +12,7 @@ figma.ui.onmessage = pluginMessage => {
         console.log(pluArr)
         console.log(linkArr)
 
-        const link = await figma.createText()
-        await figma.loadFontAsync({family: "Inter", style: "Regular"})
-        link.x = 50
-        link.y = 50
-        link.characters = pluginMessage.linkValue
-        link.fontSize = 18
-        link.fills = [{type: 'SOLID', color: {r: 0, g: 0, b: 0}}]
-
-        /////////////синхронный запрос///////////////
+               /////////////синхронный запрос///////////////
         let iterLinksArray = linkArr[Symbol.iterator]();
         let iterPluArray = pluArr[Symbol.iterator]();
         let linksArray = Array.from(iterLinksArray);
@@ -60,6 +52,14 @@ figma.ui.onmessage = pluginMessage => {
                 frame.appendChild(rectangleObject)
             }
         }
+
+        const link = await figma.createText()
+        await figma.loadFontAsync({family: "Inter", style: "Regular"})
+        link.x = 50
+        link.y = 50
+        link.characters = (`Количество обработанных имён: ${pluArray.length}. \nКоличество обработанных ссылок: ${linksArray.length}.`)
+        link.fontSize = 18
+        link.fills = [{type: 'SOLID', color: {r: 0, g: 0, b: 0}}]
 
         await figma.closePlugin()
     })()
