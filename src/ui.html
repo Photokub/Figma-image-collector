@@ -76,7 +76,6 @@
         }
 
         .form__error {
-            /*display: none;*/
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
@@ -84,10 +83,10 @@
             color: #E00043;
             opacity: 0;
             visibility: hidden;
+            text-align: center;
         }
 
         .form__error_active {
-            /*display: flex;*/
             opacity: 1;
             visibility: visible;
             transition: .5s;
@@ -100,7 +99,7 @@
             font-weight: 400;
             font-size: 8px;
             color: #AAAAAA;
-            padding-top: 30px;
+            padding-top: 15px;
         }
 
 
@@ -109,13 +108,13 @@
 <body class="app">
 <section class="app">
     <h1 class="app__header">Image collector</h1>
-    <form class="form">
+    <form class="form" id="form">
         <input id="names_field" placeholder="Names" class="form__input">
         <input id="links_field" placeholder="Links" class="form__input">
-        <span class="form__error">Ошибка: количество ссылок и имён не совпадает</span>
+        <span class="form__error">Ошибка: количество ссылок и имён не совпадает!<br>Двойные пробелы должны отсутствовать.</span>
         <div class="form__btn-container">
             <button id="create" class='form__button_disabled' disabled>Create</button>
-            <button id="reset" class='form__button_disabled' disabled>Reset</button>
+            <button type='reset' id="reset" class='form__button_disabled' disabled>Reset</button>
         </div>
     </form>
     <p class="sign">Developed by Aleksandr Kubyshkin</p>
@@ -124,6 +123,7 @@
 
 <script>
 
+    const form = document.getElementById('form')
     const createBtn = document.getElementById('create')
     const resetBtn = document.getElementById('reset')
     const linkInput = document.getElementById('links_field')
@@ -138,10 +138,6 @@
         const linkArr = linkValue.split(' ')
 
         parent.postMessage({pluginMessage: {namesValue, linkValue, namesArr, linkArr}}, '*')
-    }
-
-    createBtn.onclick = () => {
-        handleData(namesInput, linkInput)
     }
 
     disableButtons = function (btn) {
@@ -162,52 +158,45 @@
         btn.removeAttribute('disabled')
     }
 
-    // buttonCondition = function () {
-    //     if (linkInput.value === '' || namesInput.value === '') {
-    //         disableButtons(createBtn)
-    //         disableButtons(resetBtn)
-    //     } else {
-    //         enableButtons(createBtn)
-    //         enableButtons(resetBtn)
-    //     }
-    // }
-
     validData = function () {
         const namesValue = linkInput.value
         const linkValue = namesInput.value
         const namesArr = namesValue.split(' ')
         const linkArr = linkValue.split(' ')
-        console.log(namesArr)
-        console.log(linkArr)
 
-        if ((namesArr.length !== linkArr.length) || (linkInput.value === '' || namesInput.value === '')){
+        if ((namesArr.length !== linkArr.length) || (linkInput.value === '' || namesInput.value === '')) {
             errorSpan.classList.add('form__error_active')
             disableButtons(createBtn)
-            disableButtons(resetBtn)
         } else {
             errorSpan.classList.remove('form__error_active')
             enableButtons(createBtn)
+        }
+
+        if (linkInput.value !== '' || namesInput.value !== '') {
             enableButtons(resetBtn)
+        } else {
+            disableButtons(resetBtn)
         }
     }
 
     linkInput.oninput = function () {
-        //buttonCondition()
         validData()
     }
     namesInput.oninput = function () {
-        //buttonCondition()
         validData()
     }
 
-    // linkInput.onchange = function () {
-    //     validData()
-    // }
-    //
-    // namesInput.onchange = function () {
-    //     validData()
-    // }
+    createBtn.onclick = () => {
+        handleData(namesInput, linkInput)
+    }
 
+    resetBtn.onclick = () => {
+        disableButtons(createBtn)
+        disableButtons(resetBtn)
+        linkInput.value =''
+        namesInput.value=''
+        errorSpan.classList.remove('form__error_active')
+    }
 
 </script>
 </html>

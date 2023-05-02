@@ -7,7 +7,7 @@ figma.ui.onmessage = pluginMessage => {
 
     (async () => {
 
-        const pluArr = pluginMessage.pluArr;
+        const pluArr = pluginMessage.namesArr;
         const linkArr = pluginMessage.linkArr;
         console.log(pluArr)
         console.log(linkArr)
