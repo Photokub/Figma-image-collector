@@ -184,6 +184,13 @@
         validData()
     }
 
+    linkInput.onpaste = function () {
+        validData()
+    }
+    namesInput.onpaste = function () {
+        validData()
+    }
+
     createBtn.onclick = () => {
         handleData(namesInput, linkInput)
     }

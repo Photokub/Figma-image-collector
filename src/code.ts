@@ -24,8 +24,11 @@ figma.ui.onmessage = pluginMessage => {
             if (typeof elem === "string") {
                 console.log(elem)
                 let imgLink = await figma.createImageAsync(elem)
+                if (!imgLink){
+                    throw new Error('ОШИБКА ОШИБКА!!! ЭТО НЕ ИЗОБРАЖЕНИЕ')
+                    console.log('ОШИБКА ОШИБКА!!! ЭТО НЕ ИЗОБРАЖЕНИЕ')
+                }
                 console.log(imgLink)
-
                 const rectangleObject = figma.createRectangle()
                 rectangleObject.resize(395, 320)
                 rectangleObject.fills = [
