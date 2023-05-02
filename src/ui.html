@@ -43,11 +43,11 @@
             border: none;
         }
 
-        .form__input:focus{
+        .form__input:focus {
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 25%);
         }
 
-        .form__btn-container{
+        .form__btn-container {
             padding: 20px 0 0 0;
             display: flex;
             flex-direction: row;
@@ -55,16 +55,28 @@
             width: 50%;
         }
 
-        .form__button{
+        .form__button_enabled {
             background: #007088;
-            width: 95px;
+            width: 105px;
             height: 40px;
             color: #FFFF;
             border: none;
             border-radius: 5px;
+            transition: .5s;
         }
 
-        .form__error{
+        .form__button_disabled {
+            background: #E6E6E6;
+            width: 105px;
+            height: 40px;
+            color: #AAAAAA;
+            border: none;
+            border-radius: 5px;
+            transition: .5s;
+        }
+
+        .form__error {
+            /*display: none;*/
             font-family: 'Inter';
             font-style: normal;
             font-weight: 400;
@@ -74,13 +86,14 @@
             visibility: hidden;
         }
 
-        .form__error_active{
-            opacity: 0;
-            visibility: hidden;
-            transition: .2s;
+        .form__error_active {
+            /*display: flex;*/
+            opacity: 1;
+            visibility: visible;
+            transition: .5s;
         }
 
-        .sign{
+        .sign {
             align-self: end;
             font-family: 'Inter';
             font-style: normal;
@@ -101,8 +114,8 @@
         <input id="links_field" placeholder="Links" class="form__input">
         <span class="form__error">Ошибка: количество ссылок и имён не совпадает</span>
         <div class="form__btn-container">
-            <button id="create" class='form__button'>Create</button>
-            <button id="cancel" class='form__button'>Reset</button>
+            <button id="create" class='form__button_disabled' disabled>Create</button>
+            <button id="reset" class='form__button_disabled' disabled>Reset</button>
         </div>
     </form>
     <p class="sign">Developed by Aleksandr Kubyshkin</p>
@@ -112,22 +125,89 @@
 <script>
 
     const createBtn = document.getElementById('create')
-    const link = document.getElementById('links_field')
-    const plu = document.getElementById('names_field')
+    const resetBtn = document.getElementById('reset')
+    const linkInput = document.getElementById('links_field')
+    const namesInput = document.getElementById('names_field')
+    const errorSpan = document.querySelector('.form__error')
 
-    function handleData(plu, link) {
-        const pluValue = plu.value
+    function handleData(names, link) {
+        const namesValue = names.value
         const linkValue = link.value
 
-        const pluArr = pluValue.split(' ')
+        const namesArr = namesValue.split(' ')
         const linkArr = linkValue.split(' ')
 
-        parent.postMessage({pluginMessage: {pluValue, linkValue, pluArr, linkArr}}, '*')
+        parent.postMessage({pluginMessage: {namesValue, linkValue, namesArr, linkArr}}, '*')
     }
 
     createBtn.onclick = () => {
-        handleData(plu, link)
+        handleData(namesInput, linkInput)
     }
+
+    disableButtons = function (btn) {
+        btn.classList.add('form__button_disabled')
+        btn.classList.remove('form__button_enabled')
+        btn.setAttribute('disabled', true)
+        btn.classList.add('form__button_disabled')
+        btn.classList.remove('form__button_enabled')
+        btn.setAttribute('disabled', true)
+    }
+
+    enableButtons = function (btn) {
+        btn.classList.add('form__button_enabled')
+        btn.classList.remove('form__button_disabled')
+        btn.removeAttribute('disabled')
+        btn.classList.add('form__button_enabled')
+        btn.classList.remove('form__button_disabled')
+        btn.removeAttribute('disabled')
+    }
+
+    // buttonCondition = function () {
+    //     if (linkInput.value === '' || namesInput.value === '') {
+    //         disableButtons(createBtn)
+    //         disableButtons(resetBtn)
+    //     } else {
+    //         enableButtons(createBtn)
+    //         enableButtons(resetBtn)
+    //     }
+    // }
+
+    validData = function () {
+        const namesValue = linkInput.value
+        const linkValue = namesInput.value
+        const namesArr = namesValue.split(' ')
+        const linkArr = linkValue.split(' ')
+        console.log(namesArr)
+        console.log(linkArr)
+
+        if ((namesArr.length !== linkArr.length) || (linkInput.value === '' || namesInput.value === '')){
+            errorSpan.classList.add('form__error_active')
+            disableButtons(createBtn)
+            disableButtons(resetBtn)
+        } else {
+            errorSpan.classList.remove('form__error_active')
+            enableButtons(createBtn)
+            enableButtons(resetBtn)
+        }
+    }
+
+    linkInput.oninput = function () {
+        //buttonCondition()
+        validData()
+    }
+    namesInput.oninput = function () {
+        //buttonCondition()
+        validData()
+    }
+
+    // linkInput.onchange = function () {
+    //     validData()
+    // }
+    //
+    // namesInput.onchange = function () {
+    //     validData()
+    // }
+
 
 </script>
 </html>
