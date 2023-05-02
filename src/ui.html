@@ -165,17 +165,14 @@
         const namesArr = namesValue.split(' ')
         const linkArr = linkValue.split(' ')
 
-        if ((namesArr.length !== linkArr.length) || (linkInput.value === '' || namesInput.value === '')) {
+        if (linkArr.length !== namesArr.length) {
             disableButtons(createBtn)
+            errorSpan.classList.add('form__error_active')
+        } else if (linkInput.value === '' || namesInput.value === '') {
+            disableButtons(createBtn)
+            enableButtons(resetBtn)
         } else {
             enableButtons(createBtn)
-        }
-
-        if (linkInput.value !== '' || namesInput.value !== '') {
-            enableButtons(resetBtn)
-            errorSpan.classList.add('form__error_active')
-        } else {
-            disableButtons(resetBtn)
             errorSpan.classList.remove('form__error_active')
         }
     }
@@ -194,8 +191,8 @@
     resetBtn.onclick = () => {
         disableButtons(createBtn)
         disableButtons(resetBtn)
-        linkInput.value =''
-        namesInput.value=''
+        linkInput.value = ''
+        namesInput.value = ''
         errorSpan.classList.remove('form__error_active')
     }
 
