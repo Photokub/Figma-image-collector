@@ -84,6 +84,7 @@
             opacity: 0;
             visibility: hidden;
             text-align: center;
+            transition: .5s;
         }
 
         .form__error_active {
@@ -165,17 +166,17 @@
         const linkArr = linkValue.split(' ')
 
         if ((namesArr.length !== linkArr.length) || (linkInput.value === '' || namesInput.value === '')) {
-            errorSpan.classList.add('form__error_active')
             disableButtons(createBtn)
         } else {
-            errorSpan.classList.remove('form__error_active')
             enableButtons(createBtn)
         }
 
         if (linkInput.value !== '' || namesInput.value !== '') {
             enableButtons(resetBtn)
+            errorSpan.classList.add('form__error_active')
         } else {
             disableButtons(resetBtn)
+            errorSpan.classList.remove('form__error_active')
         }
     }
 
