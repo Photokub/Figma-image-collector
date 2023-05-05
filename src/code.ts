@@ -24,8 +24,18 @@ figma.ui.onmessage = pluginMessage => {
 
         for (let elem of linksArray) {
             if (typeof elem === "string") {
-                try{
+                const indexOfElement = linksArray.indexOf(elem)
+                const firstFramePositionX = 50;
+                const frameAndSpaceWidth = 475 + 50;
+                const totalWidthForFrames = frameAndSpaceWidth * linksArray.length
+                const currentFramePositionX = indexOfElement * frameAndSpaceWidth
+                const nextFramePositionX = totalWidthForFrames - currentFramePositionX
+
+                try {
                     console.log(elem)
+
+
+
                     let imgLink = await figma.createImageAsync(elem)
                     console.log(imgLink)
                     const rectangleObject = figma.createRectangle()
@@ -38,8 +48,15 @@ figma.ui.onmessage = pluginMessage => {
                         }
                     ]
 
+                    let frameXPosition;
+                    if (indexOfElement === 0) {
+                        frameXPosition = firstFramePositionX
+                    } else {
+                        frameXPosition = currentFramePositionX
+                    }
+
                     const frame = figma.createFrame();
-                    frame.x = 50
+                    frame.x = currentFramePositionX
                     frame.y = 50
                     frame.resize(475, 400)
                     let currentIndex = linksArray.indexOf(elem);
@@ -53,7 +70,7 @@ figma.ui.onmessage = pluginMessage => {
                     frame.horizontalPadding = 40
                     frame.counterAxisAlignItems = 'CENTER'
                     frame.appendChild(rectangleObject)
-                }catch(err){
+                } catch (err) {
 
                     errorsArr.push(err)
 
@@ -67,7 +84,7 @@ figma.ui.onmessage = pluginMessage => {
                     errorText.fills = [{type: 'SOLID', color: {r: 1, g: 0, b: 0}}]
 
                     const frame = figma.createFrame();
-                    frame.x = 50
+                    frame.x = currentFramePositionX
                     frame.y = 50
                     frame.resize(475, 400)
                     let currentIndex = linksArray.indexOf(elem);
@@ -88,7 +105,7 @@ figma.ui.onmessage = pluginMessage => {
         const log = await figma.createText()
         await figma.loadFontAsync({family: "Inter", style: "Regular"})
         log.x = 50
-        log.y = 0
+        log.y = -50
         log.characters = (`Количество обработанных имён: ${pluArray.length}. \nКоличество обработанных ссылок: ${linksArray.length}. \nКоличество ошибок: ${errorsArr.length}`)
         log.fontSize = 18
         log.fills = [{type: 'SOLID', color: {r: 0, g: 0, b: 0}}]
