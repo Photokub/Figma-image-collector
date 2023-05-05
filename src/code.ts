@@ -24,16 +24,57 @@ figma.ui.onmessage = pluginMessage => {
 
         for (let elem of linksArray) {
             if (typeof elem === "string") {
+
                 const indexOfElement = linksArray.indexOf(elem)
                 const firstFramePositionX = 50;
                 const frameAndSpaceWidth = 475 + 50;
+                let frameAndSpaceHeight = 400 + 50;
                 const totalWidthForFrames = frameAndSpaceWidth * linksArray.length
-                const currentFramePositionX = indexOfElement * frameAndSpaceWidth
+                let rowWidth = frameAndSpaceWidth * 10;
+               // let currentFramePositionX = indexOfElement * frameAndSpaceWidth
+                let currentFramePositionX = indexOfElement * frameAndSpaceWidth
+                let framePositionInRowX = rowWidth - currentFramePositionX
                 const nextFramePositionX = totalWidthForFrames - currentFramePositionX
+
+                let positionY
+
+                //handlePos(positionY, indexOfElement)
+
+                //let rowWidth = totalWidthForFrames / (frameAndSpaceWidth * 10);
+
+                console.log(`ПОЛНАЯ ШИРИНА ПОД ФРЕЙМЫ: ${totalWidthForFrames}`)
+                console.log(`ШИРИНА РЯДА: ${rowWidth}`)
+
+                // if(indexOfElement % 10 == 0){
+                //     //currentFramePositionX = 0;
+                //     positionY = frameAndSpaceHeight++
+                // }
+
+                function handleRows(){
+
+                }
+
+                function handlePos(){
+                    //if(indexOfElement % 10 == 0 && indexOfElement != 0){
+                    if(currentFramePositionX >= rowWidth){
+                        positionY = frameAndSpaceHeight++
+                    } else {
+                        positionY = 0
+                    }
+                }
+
+                handlePos()
+                console.log(`ПОЗИЦИЯ Y: ${positionY}`)
+
+
+                 //let positionY = 0;
+                // if (indexOfElement % 10) {
+                //     positionY = frameAndSpaceHeight
+                //
+                // }
 
                 try {
                     console.log(elem)
-
 
 
                     let imgLink = await figma.createImageAsync(elem)
@@ -57,7 +98,7 @@ figma.ui.onmessage = pluginMessage => {
 
                     const frame = figma.createFrame();
                     frame.x = currentFramePositionX
-                    frame.y = 50
+                    frame.y = positionY
                     frame.resize(475, 400)
                     let currentIndex = linksArray.indexOf(elem);
                     console.log(currentIndex)
@@ -85,7 +126,7 @@ figma.ui.onmessage = pluginMessage => {
 
                     const frame = figma.createFrame();
                     frame.x = currentFramePositionX
-                    frame.y = 50
+                    frame.y = positionY
                     frame.resize(475, 400)
                     let currentIndex = linksArray.indexOf(elem);
 
