@@ -9,8 +9,10 @@ figma.ui.onmessage = pluginMessage => {
 
         const pluArr = pluginMessage.namesArr;
         const linkArr = pluginMessage.linkArr;
+        const errorsArr: any[] = []
         console.log(pluArr)
         console.log(linkArr)
+        console.log(errorsArr)
 
         /////////////синхронный запрос///////////////
         let iterLinksArray = linkArr[Symbol.iterator]();
@@ -25,10 +27,6 @@ figma.ui.onmessage = pluginMessage => {
                 try{
                     console.log(elem)
                     let imgLink = await figma.createImageAsync(elem)
-                    // if (!imgLink){
-                    //     throw new Error('ОШИБКА ОШИБКА!!! ЭТО НЕ ИЗОБРАЖЕНИЕ')
-                    //     console.log('ОШИБКА ОШИБКА!!! ЭТО НЕ ИЗОБРАЖЕНИЕ')
-                    // }
                     console.log(imgLink)
                     const rectangleObject = figma.createRectangle()
                     rectangleObject.resize(395, 320)
@@ -56,9 +54,8 @@ figma.ui.onmessage = pluginMessage => {
                     frame.counterAxisAlignItems = 'CENTER'
                     frame.appendChild(rectangleObject)
                 }catch(err){
-                    // const errorObject = figma.createRectangle()
-                    // errorObject.resize(395, 320)
-                    // errorObject.fills = [{ type: 'SOLID', color: { r: 1, g: 0, b: 0 } }]
+
+                    errorsArr.push(err)
 
                     const errorText = await figma.createText()
                     await figma.loadFontAsync({family: "Inter", style: "Regular"})
@@ -92,7 +89,7 @@ figma.ui.onmessage = pluginMessage => {
         await figma.loadFontAsync({family: "Inter", style: "Regular"})
         log.x = 50
         log.y = 0
-        log.characters = (`Количество обработанных имён: ${pluArray.length}. \nКоличество обработанных ссылок: ${linksArray.length}.`)
+        log.characters = (`Количество обработанных имён: ${pluArray.length}. \nКоличество обработанных ссылок: ${linksArray.length}. \nКоличество ошибок: ${errorsArr.length}`)
         log.fontSize = 18
         log.fills = [{type: 'SOLID', color: {r: 0, g: 0, b: 0}}]
 
