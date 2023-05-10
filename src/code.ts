@@ -28,10 +28,10 @@ figma.ui.onmessage = pluginMessage => {
                 const indexOfElement = linksArray.indexOf(elem)
                 const firstFramePositionX = 50;
                 const frameAndSpaceWidth = 475 + 50;
-                let frameAndSpaceHeight = 400 + 50;
+                //let frameAndSpaceHeight = 400 + 50;
                 const totalWidthForFrames = frameAndSpaceWidth * linksArray.length
                 let rowWidth = frameAndSpaceWidth * 10;
-               // let currentFramePositionX = indexOfElement * frameAndSpaceWidth
+                // let currentFramePositionX = indexOfElement * frameAndSpaceWidth
                 let currentFramePositionX = indexOfElement * frameAndSpaceWidth
                 let framePositionInRowX = rowWidth - currentFramePositionX
                 const nextFramePositionX = totalWidthForFrames - currentFramePositionX
@@ -45,29 +45,61 @@ figma.ui.onmessage = pluginMessage => {
                 console.log(`ПОЛНАЯ ШИРИНА ПОД ФРЕЙМЫ: ${totalWidthForFrames}`)
                 console.log(`ШИРИНА РЯДА: ${rowWidth}`)
 
-                // if(indexOfElement % 10 == 0){
-                //     //currentFramePositionX = 0;
-                //     positionY = frameAndSpaceHeight++
+
+                // function handlePos(){
+                //     //if(indexOfElement % 10 == 0 && indexOfElement != 0){
+                //     if(currentFramePositionX >= rowWidth){
+                //         positionY = frameAndSpaceHeight++
+                //         currentFramePositionX = currentFramePositionX - rowWidth;
+                //         console.log(`ТЕКУЩАЯ ПОЗИЦИЯ X: ${currentFramePositionX}`)
+                //     } else {
+                //         positionY = 0
+                //     }
                 // }
 
-                function handleRows(){
 
-                }
-
-                function handlePos(){
-                    //if(indexOfElement % 10 == 0 && indexOfElement != 0){
-                    if(currentFramePositionX >= rowWidth){
-                        positionY = frameAndSpaceHeight++
-                    } else {
-                        positionY = 0
+                function handlePos() {
+                    let row = 450
+                    //let col = 0
+                    //let positionY
+                    return function () {
+                        if (currentFramePositionX >= rowWidth) {
+                            currentFramePositionX = currentFramePositionX - rowWidth
+                            return row + 50
+                        } else {
+                            return positionY = 0
+                        }
                     }
                 }
 
-                handlePos()
-                console.log(`ПОЗИЦИЯ Y: ${positionY}`)
+                function handlePosX() {
+                    //let row = 450
+                    let col = 0
+                    //let positionY
+                    return function () {
+                        if (currentFramePositionX >= rowWidth) {
+                            return col = currentFramePositionX - rowWidth
+                            //return row + 50
+                        } else {
+                            return currentFramePositionX
+                        }
+                    }
+                }
+
+                let setY = handlePos()
+                let setX = handlePosX()
+                //setY()
 
 
-                 //let positionY = 0;
+                //handlePos()
+
+                //console.log(`ПОЗИЦИЯ Y: ${positionY}`)
+                console.log(`currentFramePositionX: ${currentFramePositionX}`)
+                console.log(`ПОЗИЦИЯ X: ${setX()}`)
+                console.log(`ПОЗИЦИЯ Y: ${setY()}`)
+
+
+                //let positionY = 0;
                 // if (indexOfElement % 10) {
                 //     positionY = frameAndSpaceHeight
                 //
@@ -97,8 +129,9 @@ figma.ui.onmessage = pluginMessage => {
                     }
 
                     const frame = figma.createFrame();
-                    frame.x = currentFramePositionX
-                    frame.y = positionY
+                    //frame.x = currentFramePositionX
+                    frame.x = setX()
+                    frame.y = setY()
                     frame.resize(475, 400)
                     let currentIndex = linksArray.indexOf(elem);
                     console.log(currentIndex)
@@ -118,15 +151,16 @@ figma.ui.onmessage = pluginMessage => {
                     const errorText = await figma.createText()
                     await figma.loadFontAsync({family: "Inter", style: "Regular"})
                     errorText.resize(395, 320)
-                    errorText.x = 50
-                    errorText.y = 0
+                    //errorText.x = 50
+                    errorText.x = setX()
+                    errorText.y = setY()
                     errorText.characters = ('ERROR:' + '\n' + (err))
                     errorText.fontSize = 24
                     errorText.fills = [{type: 'SOLID', color: {r: 1, g: 0, b: 0}}]
 
                     const frame = figma.createFrame();
                     frame.x = currentFramePositionX
-                    frame.y = positionY
+                    frame.y = 0
                     frame.resize(475, 400)
                     let currentIndex = linksArray.indexOf(elem);
 
