@@ -69,7 +69,7 @@ figma.ui.onmessage = pluginMessage => {
         }
 
         function setYPos() {
-            let step = 250
+            let step = 230
             let yPos = 0;
             return function () {
             const position = handleYPosition.counterY
@@ -90,11 +90,7 @@ figma.ui.onmessage = pluginMessage => {
                 const indexOfElement = linksArray.indexOf(elem)
                 const firstFramePositionX = 50;
                 const frameAndSpaceWidth = 475 + 50;
-                const totalWidthForFrames = frameAndSpaceWidth * linksArray.length
-                let rowWidth = frameAndSpaceWidth * 10;
                 let currentFramePositionX = indexOfElement * frameAndSpaceWidth
-                let framePositionInRowX = rowWidth - currentFramePositionX
-                const nextFramePositionX = totalWidthForFrames - currentFramePositionX
 
                 console.log(`handleXPosition(): ${handleXPosition()}`)
                 console.log(`handleYPosition(): ${handleYPosition()}`)
