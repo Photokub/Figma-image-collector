@@ -1,0 +1,64 @@
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es6"],
+    "strict": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma"
+    ],
+    "outDir": "./dist",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+  },
+  "include": ["src/**/*.ts"]
+}
+
+//{
+//  "extends": "@create-figma-plugin/tsconfig",
+//  "compilerOptions": {
+//    "typeRoots": ["node_modules/@figma", "node_modules/@types"]
+//  }
+//}
+
+//{
+//  "extends": "@create-figma-plugin/tsconfig",
+//  "compilerOptions": {
+//    //"useUnknownInCatchVariables": false,
+//    //"module":"umd",
+//    "skipLibCheck": true,
+//    "esModuleInterop": true,
+//    "allowSyntheticDefaultImports": true,
+//    "allowUmdGlobalAccess": true,
+//    "moduleResolution": "classic",
+//    //"outDir": "./built",
+//    "target": "es6",
+//    "lib": ["es6"],
+//    "strict": true,
+//    "allowJs": true,
+//    "typeRoots": [
+//      "./node_modules/@types",
+//      "./node_modules/@figma"
+//    ],
+//  },
+//  "include": ["src/**/*.ts", "src/**/*.tsx"]
+//  "exclude": [
+//    "./plugins/**/*",
+//    "./typings/**/*",
+//    "./built/**/*" // This is what fixed it!
+//  ]
+//  "exclude": [
+//    "utils"
+//  ]
+//}
+
+//{
+//  "extends": "@create-figma-plugin/tsconfig",
+//  "compilerOptions": {
+//    "typeRoots": ["node_modules/@figma", "node_modules/@types"]
+//  },
+//  "include": ["src/**/*.ts", "src/**/*.tsx"]
+//}
