@@ -1,3 +1,51 @@
+// function positionCounter() {
+//     function counter() {
+//         if (counter.value >= itemsPerRow) {
+//             return counter.value = 1
+//         } else {
+//             return counter.value++
+//         }
+//     }
+//
+//     counter.value = 0
+//     return counter
+// }
+//
+// let handlePosition = positionCounter()
+//
+// function setXPos() {
+//     let step = 280
+//     let xPos = 0;
+//     return function () {
+//         const position = handlePosition.value
+//         console.log(`ЗНАЧЕНИЕ position в setXPos: ${position}`)
+//         if (position >= itemsPerRow) {
+//             console.log(`ЗНАЧЕНИЕ position в setXPos после is: ${position}`)
+//             return xPos = 0
+//         } else {
+//             console.log(`ЗНАЧЕНИЕ position в setXPos после is: ${position}`)
+//             return xPos = xPos + step
+//         }
+//     }
+// }
+//
+// function setYPos() {
+//     let step = 230
+//     let yPos = 0;
+//     return function () {
+//         const position = handlePosition.value
+//         console.log(`ЗНАЧЕНИЕ position в setYPos: ${position}`)
+//         if (position == itemsPerRow) {
+//             return yPos = yPos + step
+//         } else {
+//             return yPos
+//         }
+//     }
+// }
+//
+// const setX = setXPos()
+// const setY = setYPos()
+
 figma.showUI(__html__, {
     width: 500,
     height: 360,
@@ -19,50 +67,102 @@ figma.ui.onmessage = pluginMessage => {
 
         const itemsPerRow = 10;
 
-        function counterForXPosition() {
+        // function counterForXPosition() {
+        //
+        //     function counter() {
+        //         if (counter.counterX >= itemsPerRow) {
+        //             console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Х: ${counter.counterX}`)
+        //             return counter.counterX = 1
+        //         }
+        //         else {
+        //             console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Х: ${counter.counterX}`)
+        //             return counter.counterX++
+        //         }
+        //     }
+        //
+        //     counter.counterX = 0
+        //     return counter
+        // }
+        //
+        // function counterForYPosition() {
+        //     function counter() {
+        //         if (counter.counterY >= itemsPerRow) {
+        //             console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Y: ${counter.counterY}`)
+        //             return counter.counterY = 1
+        //         } else {
+        //             console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Y: ${counter.counterY}`)
+        //             return counter.counterY++
+        //         }
+        //     }
+        //
+        //     counter.counterY = 0
+        //     return counter
+        // }
+        //
+        // let handleXPosition = counterForXPosition();
+        // let handleYPosition = counterForYPosition();
+        //
+        // function setXPos() {
+        //     let step = 280
+        //     let xPos = 0;
+        //     return function () {
+        //         const position = handleXPosition.counterX
+        //         console.log(`ЗНАЧЕНИЕ position X: ${position}`)
+        //         if (handleXPosition.counterX >= itemsPerRow ) {
+        //             return xPos = 0
+        //         } else {
+        //             return xPos = xPos + step
+        //         }
+        //     }
+        // }
+        //
+        // function setYPos() {
+        //     let step = 230
+        //     let yPos = 0;
+        //     return function () {
+        //         const position = handleYPosition.counterY
+        //         if (position == itemsPerRow) {
+        //             return yPos = yPos + step
+        //         } else {
+        //             return yPos
+        //         }
+        //     }
+        // }
+        //
+        // const setX = setXPos()
+        // const setY = setYPos()
+
+
+        function positionCounter() {
 
             function counter() {
-                if (counter.counterX >= itemsPerRow) {
-                    console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Х: ${counter.counterX}`)
-                    return counter.counterX = 1
-                }
-                else {
-                    console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Х: ${counter.counterX}`)
-                    return counter.counterX++
-                }
-            }
-
-            counter.counterX = 0
-            return counter
-        }
-
-        function counterForYPosition() {
-            function counter() {
-                if (counter.counterY >= itemsPerRow) {
-                    console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Y: ${counter.counterY}`)
-                    return counter.counterY = 1
+                if (counter.value >= itemsPerRow) {
+                    return counter.value = 1
                 } else {
-                    console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Y: ${counter.counterY}`)
-                    return counter.counterY++
+                    return counter.value++
                 }
             }
 
-            counter.counterY = 0
+            counter.value = 0
             return counter
         }
 
-        let handleXPosition = counterForXPosition();
-        let handleYPosition = counterForYPosition();
+
+        let handleXCounter = positionCounter();
+        let handleYCounter = positionCounter();
+
 
         function setXPos() {
             let step = 280
             let xPos = 0;
             return function () {
-            const position = handleXPosition.counterX
-                console.log(`ЗНАЧЕНИЕ position X: ${position}`)
-                if (handleXPosition.counterX >= itemsPerRow ) {
-                    return xPos = 0
+                const position = handleXCounter.value
+                console.log(`ЗНАЧЕНИЕ position в setXPos: ${position}`)
+                if (position >= itemsPerRow) {
+                    //console.log(`ЗНАЧЕНИЕ position в setXPos после if: ${position}`)
+                    return xPos = 0;
                 } else {
+                   // console.log(`ЗНАЧЕНИЕ position в setXPos после else: ${position}`)
                     return xPos = xPos + step
                 }
             }
@@ -72,7 +172,8 @@ figma.ui.onmessage = pluginMessage => {
             let step = 230
             let yPos = 0;
             return function () {
-            const position = handleYPosition.counterY
+                const position = handleYCounter.value
+                console.log(`ЗНАЧЕНИЕ position в setYPos: ${position}`)
                 if (position == itemsPerRow) {
                     return yPos = yPos + step
                 } else {
@@ -92,12 +193,14 @@ figma.ui.onmessage = pluginMessage => {
                 const frameAndSpaceWidth = 475 + 50;
                 let currentFramePositionX = indexOfElement * frameAndSpaceWidth
 
-                console.log(`handleXPosition(): ${handleXPosition()}`)
-                console.log(`handleYPosition(): ${handleYPosition()}`)
-                console.log(`handleXPosition.counterX: ${handleXPosition.counterX}`)
-                console.log(`handleYPosition.counterY: ${handleYPosition.counterY}`)
+                //console.log(`handleXPosition(): ${handleXPosition()}`)
+                //console.log(`handleYPosition(): ${handleYPosition()}`)
+                //console.log(`handleXPosition.counterX: ${handleXPosition.counterX}`)
+                //console.log(`handleYPosition.counterY: ${handleYPosition.counterY}`)
+                console.log(`ЗНАЧЕНИЕ СЧЁТЧИКА Х: ${handleXCounter()}`)
+                console.log(`ЗНАЧЕНИЕ СЧЁТЧИКА Y: ${handleYCounter()}`)
                 console.log(`setX: ${setX()}`)
-                console.log(`seY: ${setY()}`)
+                console.log(`setY: ${setY()}`)
 
                 try {
                     console.log(elem)
@@ -179,4 +282,3 @@ figma.ui.onmessage = pluginMessage => {
         await figma.closePlugin()
     })()
 }
-
