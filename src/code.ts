@@ -36,34 +36,55 @@ figma.ui.onmessage = pluginMessage => {
         let handleXCounter = positionCounter();
         let handleYCounter = positionCounter();
 
-        function setXPos() {
-            let step = 525
-            let xPos = 0;
-            return function () {
-                const position = handleXCounter.value
-                if (position >= itemsPerRow) {
-                    return xPos = 0;
+        // function setXPos() {
+        //     let step = 525
+        //     let xPos = 0;
+        //     return function () {
+        //         const position = handleXCounter.value
+        //         if (position >= itemsPerRow) {
+        //             return xPos = 0;
+        //         } else {
+        //             return xPos = xPos + step
+        //         }
+        //     }
+        // }
+        //
+        // function setYPos() {
+        //     let step = 450
+        //     let yPos = 0;
+        //     return function () {
+        //         const position = handleYCounter.value
+        //         if (position >= itemsPerRow) {
+        //             return yPos = yPos + step
+        //         } else {
+        //             return yPos
+        //         }
+        //     }
+        // }
+
+        // const setX = setXPos()
+        // const setY = setYPos()
+
+        function setPosition(counter, stepRate, position){
+            const counterValue = counter.value
+            if (counter === 'handleXCounter'){
+                if (counterValue >= itemsPerRow) {
+                    return position = 0;
                 } else {
-                    return xPos = xPos + step
+                    return position = position + stepRate
+                }
+            }else{
+                if (counterValue >= itemsPerRow) {
+                    return position = position + stepRate
+                } else {
+                    return position
                 }
             }
         }
 
-        function setYPos() {
-            let step = 450
-            let yPos = 0;
-            return function () {
-                const position = handleYCounter.value
-                if (position >= itemsPerRow) {
-                    return yPos = yPos + step
-                } else {
-                    return yPos
-                }
-            }
-        }
+        const setX = setPosition(handleXCounter, 525, 0)
+        const setY = setPosition(handleYCounter, 450, 0)
 
-        const setX = setXPos()
-        const setY = setYPos()
 
         for (let elem of linksArray) {
             if (typeof elem === "string") {
