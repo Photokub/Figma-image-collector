@@ -19,70 +19,72 @@ figma.ui.onmessage = pluginMessage => {
 
         const itemsPerRow = 10;
 
-        function counterForXPosition() {
+        function positionCounter() {
 
             function counter() {
-                if (counter.counterX >= itemsPerRow) {
-                    console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Х: ${counter.counterX}`)
-                    return counter.counterX = 1
-                }
-                else {
-                    console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Х: ${counter.counterX}`)
-                    return counter.counterX++
+                if (counter.value == itemsPerRow) {
+                    return counter.value = 1
+                } else {
+                    return counter.value++
                 }
             }
 
-            counter.counterX = 0
+            counter.value = 0
             return counter
         }
 
-        function counterForYPosition() {
-            function counter() {
-                if (counter.counterY >= itemsPerRow) {
-                    console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Y: ${counter.counterY}`)
-                    return counter.counterY = 1
+        let handleXCounter = positionCounter();
+        let handleYCounter = positionCounter();
+
+        // function setXPos() {
+        //     let step = 525
+        //     let xPos = 0;
+        //     return function () {
+        //         const position = handleXCounter.value
+        //         if (position >= itemsPerRow) {
+        //             return xPos = 0;
+        //         } else {
+        //             return xPos = xPos + step
+        //         }
+        //     }
+        // }
+        //
+        // function setYPos() {
+        //     let step = 450
+        //     let yPos = 0;
+        //     return function () {
+        //         const position = handleYCounter.value
+        //         if (position >= itemsPerRow) {
+        //             return yPos = yPos + step
+        //         } else {
+        //             return yPos
+        //         }
+        //     }
+        // }
+
+        // const setX = setXPos()
+        // const setY = setYPos()
+
+        function setPosition(counter, stepRate, position){
+            const counterValue = counter.value
+            if (counter === 'handleXCounter'){
+                if (counterValue >= itemsPerRow) {
+                    return position = 0;
                 } else {
-                    console.log(`ЗНАЧЕНИЕ СЧЕТЧИКА Y: ${counter.counterY}`)
-                    return counter.counterY++
+                    return position = position + stepRate
+                }
+            }else{
+                if (counterValue >= itemsPerRow) {
+                    return position = position + stepRate
+                } else {
+                    return position
                 }
             }
-
-            counter.counterY = 0
-            return counter
         }
 
-        let handleXPosition = counterForXPosition();
-        let handleYPosition = counterForYPosition();
+        const setX = setPosition(handleXCounter, 525, 0)
+        const setY = setPosition(handleYCounter, 450, 0)
 
-        function setXPos() {
-            let step = 280
-            let xPos = 0;
-            return function () {
-            const position = handleXPosition.counterX
-                console.log(`ЗНАЧЕНИЕ position X: ${position}`)
-                if (handleXPosition.counterX >= itemsPerRow ) {
-                    return xPos = 0
-                } else {
-                    return xPos = xPos + step
-                }
-            }
-        }
-
-        function setYPos() {
-            let step = 230
-            let yPos = 0;
-            return function () {
-            const position = handleYPosition.counterY
-                if (position == itemsPerRow) {
-                    return yPos = yPos + step
-                } else {
-                    return yPos
-                }
-            }
-        }
-
-        const setX = setXPos()
-        const setY = setYPos()
 
         for (let elem of linksArray) {
             if (typeof elem === "string") {
@@ -92,12 +94,10 @@ figma.ui.onmessage = pluginMessage => {
                 const frameAndSpaceWidth = 475 + 50;
                 let currentFramePositionX = indexOfElement * frameAndSpaceWidth
 
-                console.log(`handleXPosition(): ${handleXPosition()}`)
-                console.log(`handleYPosition(): ${handleYPosition()}`)
-                console.log(`handleXPosition.counterX: ${handleXPosition.counterX}`)
-                console.log(`handleYPosition.counterY: ${handleYPosition.counterY}`)
-                console.log(`setX: ${setX()}`)
-                console.log(`seY: ${setY()}`)
+                console.log(`ЗНАЧЕНИЕ СЧЁТЧИКА Х: ${handleXCounter.value}`)
+                console.log(`ЗНАЧЕНИЕ СЧЁТЧИКА Y: ${handleYCounter.value}`)
+                handleXCounter()
+                handleYCounter()
 
                 try {
                     console.log(elem)
@@ -179,4 +179,3 @@ figma.ui.onmessage = pluginMessage => {
         await figma.closePlugin()
     })()
 }
-
