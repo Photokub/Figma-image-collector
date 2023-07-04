@@ -67,16 +67,25 @@ figma.ui.onmessage = pluginMessage => {
         const setY = setYPos()
 
         const card = {
-            name:'',
-            frame:{
-                width:'',
-                height:'',
+            name: '',
+            frame: {
+                width: '',
+                height: '',
             },
-            image:{
-                width:'',
-                height:'',
-                src:'',
+            image: {
+                width: '',
+                height: '',
+                src: '',
             },
+        }
+
+        class Card {
+            private _name: any;
+            private _image: any;
+            constructor(name, image) {
+                this._name = name;
+                this._image = image;
+            }
         }
 
 
