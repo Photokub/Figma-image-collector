@@ -92,11 +92,6 @@ figma.ui.onmessage = pluginMessage => {
         for (let elem of linksArray) {
             if (typeof elem === "string") {
 
-                const indexOfElement = linksArray.indexOf(elem)
-                const firstFramePositionX = 50;
-                const frameAndSpaceWidth = 475 + 50;
-                let currentFramePositionX = indexOfElement * frameAndSpaceWidth
-
                 console.log(`ЗНАЧЕНИЕ СЧЁТЧИКА Х: ${handleXCounter.value}`)
                 console.log(`ЗНАЧЕНИЕ СЧЁТЧИКА Y: ${handleYCounter.value}`)
                 handleXCounter()
@@ -116,13 +111,6 @@ figma.ui.onmessage = pluginMessage => {
                             scaleMode: 'FIT'
                         }
                     ]
-
-                    let frameXPosition;
-                    if (indexOfElement === 0) {
-                        frameXPosition = firstFramePositionX
-                    } else {
-                        frameXPosition = currentFramePositionX
-                    }
 
                     const frame = figma.createFrame();
                     frame.x = setX()
