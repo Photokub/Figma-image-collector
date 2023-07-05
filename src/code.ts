@@ -136,51 +136,78 @@ figma.ui.onmessage = pluginMessage => {
         const setX = setXPos()
         const setY = setYPos()
 
-        class Card {
-            private _name: any;
-            private _image: any;
-            private _imgLink: Image;
-            private _rectangleObject: RectangleNode;
-            private _frame: FrameNode;
+        // class Card {
+        //     private _name: any;
+        //     private readonly _image: any;
+        //     private _imgLink: Image;
+        //     private readonly _rectangleObject: RectangleNode;
+        //     private _frame: FrameNode;
+        //
+        //     constructor(
+        //         // name,
+        //         // image,
+        //         // linksArray,
+        //         // pluArray
+        //     ) {
+        //         //this._name = name;
+        //         //this._image = image;
+        //         this._imgLink = await figma.createImageAsync(this._image)
+        //         this._rectangleObject = figma.createRectangle()
+        //         this._frame = figma.createFrame();
+        //     }
+        //
+        //     // _generateRectangleObject() {
+        //     //     return {
+        //     //         rectangleObject: this.rectangleObject,
+        //     //     }
+        //     // }
+        //
+        //     generateRectangleObject() {
+        //         this._rectangleObject.resize(395, 320)
+        //         this._rectangleObject.fills = [
+        //             {
+        //                 type: 'IMAGE',
+        //                 imageHash: this._imgLink.hash,
+        //                 scaleMode: 'FIT'
+        //             }
+        //         ]
+        //     }
+        //
+        //     generateFrame(){
+        //         this._frame.x = setX()
+        //         this._frame.y = setY()
+        //         this._frame.resize(475, 400)
+        //         let currentIndex = linksArray.indexOf(this);
+        //         let currentFrameName = pluArray[currentIndex]
+        //         if (typeof currentFrameName === "string") {
+        //             this._frame.name = currentFrameName
+        //         }
+        //         this._frame.layoutMode = 'HORIZONTAL'
+        //         this._frame.horizontalPadding = 40
+        //         this._frame.counterAxisAlignItems = 'CENTER'
+        //         this._frame.appendChild(this._rectangleObject)
+        //     }
+        // }
 
-            constructor(name, image, linksArray, pluArray) {
-                this._name = name;
-                this._image = image;
-                this._imgLink = await figma.createImageAsync(this._image)
-                this._rectangleObject = figma.createRectangle()
-                this._frame = figma.createFrame();
-            }
-
-            // _generateRectangleObject() {
-            //     return {
-            //         rectangleObject: this.rectangleObject,
-            //     }
-            // }
-
-            generateRectangleObject() {
-                this._rectangleObject.resize(395, 320)
-                this._rectangleObject.fills = [
-                    {
-                        type: 'IMAGE',
-                        imageHash: this._imgLink.hash,
-                        scaleMode: 'FIT'
-                    }
-                ]
-            }
-
-            generateFrame(){
-                this._frame.x = setX()
-                this._frame.y = setY()
-                this._frame.resize(475, 400)
-                let currentIndex = linksArray.indexOf(this);
-                let currentFrameName = pluArray[currentIndex]
-                if (typeof currentFrameName === "string") {
-                    this._frame.name = currentFrameName
+        class CreateRectangle {
+            createRectangle(imageData) {
+                const rect = figma.createRectangle();
+                if (imageData) {
+                    rect.resize(395, 320);
+                    //rect.resize(imageData.width, imageData.height);
+                    rect.fills = [{ type: 'IMAGE', imageHash: imageData.hash, scaleMode: 'FIT' }];
                 }
-                this._frame.layoutMode = 'HORIZONTAL'
-                this._frame.horizontalPadding = 40
-                this._frame.counterAxisAlignItems = 'CENTER'
-                this._frame.appendChild(this._rectangleObject)
+                return rect;
+            }
+        }
+
+        class CreateImage extends CreateRectangle {
+            async createImageAsync(imageData) {
+                const image = await figma.createImageAsync(imageData);
+                //const { width, height } = await image.getSizeAsync();
+                return {hash: image.hash};
+                //return {hash: image.hash, width, height};
+                //return image
             }
         }
 
@@ -193,36 +220,50 @@ figma.ui.onmessage = pluginMessage => {
                 handleXCounter()
                 handleYCounter()
 
+                // let currentIndex = linksArray.indexOf(elem);
+                // console.log(currentIndex)
+                // let currentFrameName = pluArray[currentIndex]
+
                 try {
-                    console.log(elem)
 
-                    let imgLink = await figma.createImageAsync(elem)
-                    console.log(imgLink)
-                    const rectangleObject = figma.createRectangle()
-                    rectangleObject.resize(395, 320)
-                    rectangleObject.fills = [
-                        {
-                            type: 'IMAGE',
-                            imageHash: imgLink.hash,
-                            scaleMode: 'FIT'
-                        }
-                    ]
+                    const newRectangle = new CreateRectangle()
+                    const newImage = new CreateImage()
+                    const image = await newImage.createImageAsync(elem)
+                    newRectangle.createRectangle(image)
+                    console.log(image)
 
-                    const frame = figma.createFrame();
-                    frame.x = setX()
-                    frame.y = setY()
-                    frame.resize(475, 400)
-                    let currentIndex = linksArray.indexOf(elem);
-                    console.log(currentIndex)
-                    let currentFrameName = pluArray[currentIndex]
-                    console.log(currentFrameName)
-                    if (typeof currentFrameName === "string") {
-                        frame.name = currentFrameName
-                    }
-                    frame.layoutMode = 'HORIZONTAL'
-                    frame.horizontalPadding = 40
-                    frame.counterAxisAlignItems = 'CENTER'
-                    frame.appendChild(rectangleObject)
+
+
+                    //elem = new Card()
+
+                    //
+                    // let imgLink = await figma.createImageAsync(elem)
+                    // console.log(imgLink)
+                    // const rectangleObject = figma.createRectangle()
+                    // rectangleObject.resize(395, 320)
+                    // rectangleObject.fills = [
+                    //     {
+                    //         type: 'IMAGE',
+                    //         imageHash: imgLink.hash,
+                    //         scaleMode: 'FIT'
+                    //     }
+                    // ]
+                    //
+                    // const frame = figma.createFrame();
+                    // frame.x = setX()
+                    // frame.y = setY()
+                    // frame.resize(475, 400)
+                    // let currentIndex = linksArray.indexOf(elem);
+                    // console.log(currentIndex)
+                    // let currentFrameName = pluArray[currentIndex]
+                    // console.log(currentFrameName)
+                    // if (typeof currentFrameName === "string") {
+                    //     frame.name = currentFrameName
+                    // }
+                    // frame.layoutMode = 'HORIZONTAL'
+                    // frame.horizontalPadding = 40
+                    // frame.counterAxisAlignItems = 'CENTER'
+                    // frame.appendChild(rectangleObject)
                 } catch (err) {
 
                     errorsArr.push(err)
