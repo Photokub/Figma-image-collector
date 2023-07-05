@@ -3,6 +3,76 @@ figma.showUI(__html__, {
     height: 360,
 });
 
+const card = {
+    name: '',
+    frame: {
+        width: '',
+        height: '',
+    },
+    image: {
+        width: '',
+        height: '',
+        src: '',
+    },
+}
+
+// class Card {
+//     private _name: any;
+//     private _image: any;
+//     private _imgLink: Image;
+//     private _rectangleObject: RectangleNode;
+//     private _frame: FrameNode;
+//
+//     async constructor(name, image, linksArray, pluArray) {
+//         this._name = name;
+//         this._image = image;
+//         this._imgLink = await figma.createImageAsync(this._image)
+//         this._rectangleObject = figma.createRectangle()
+//         this._frame = figma.createFrame();
+//     }
+//
+//     // _generateRectangleObject() {
+//     //     return {
+//     //         rectangleObject: this.rectangleObject,
+//     //     }
+//     // }
+//
+//     generateRectangleObject() {
+//         this._rectangleObject.resize(395, 320)
+//         this._rectangleObject.fills = [
+//             {
+//                 type: 'IMAGE',
+//                 imageHash: this._imgLink.hash,
+//                 scaleMode: 'FIT'
+//             }
+//         ]
+//     }
+//
+//     generateFrame(){
+//         this._frame.x = setX()
+//         this._frame.y = setY()
+//         this._frame.resize(475, 400)
+//         let currentIndex = linksArray.indexOf(this);
+//         let currentFrameName = pluArray[currentIndex]
+//         if (typeof currentFrameName === "string") {
+//             this._frame.name = currentFrameName
+//         }
+//         this._frame.layoutMode = 'HORIZONTAL'
+//         this._frame.horizontalPadding = 40
+//         this._frame.counterAxisAlignItems = 'CENTER'
+//         this._frame.appendChild(this._rectangleObject)
+//     }
+// }
+
+// rectangleObject.resize(395, 320)
+// rectangleObject.fills = [
+//     {
+//         type: 'IMAGE',
+//         imageHash: imgLink.hash,
+//         scaleMode: 'FIT'
+//     }
+// ]
+
 figma.ui.onmessage = pluginMessage => {
 
     (async () => {
@@ -66,25 +136,51 @@ figma.ui.onmessage = pluginMessage => {
         const setX = setXPos()
         const setY = setYPos()
 
-        const card = {
-            name: '',
-            frame: {
-                width: '',
-                height: '',
-            },
-            image: {
-                width: '',
-                height: '',
-                src: '',
-            },
-        }
-
         class Card {
             private _name: any;
             private _image: any;
-            constructor(name, image) {
+            private _imgLink: Image;
+            private _rectangleObject: RectangleNode;
+            private _frame: FrameNode;
+
+            constructor(name, image, linksArray, pluArray) {
                 this._name = name;
                 this._image = image;
+                this._imgLink = await figma.createImageAsync(this._image)
+                this._rectangleObject = figma.createRectangle()
+                this._frame = figma.createFrame();
+            }
+
+            // _generateRectangleObject() {
+            //     return {
+            //         rectangleObject: this.rectangleObject,
+            //     }
+            // }
+
+            generateRectangleObject() {
+                this._rectangleObject.resize(395, 320)
+                this._rectangleObject.fills = [
+                    {
+                        type: 'IMAGE',
+                        imageHash: this._imgLink.hash,
+                        scaleMode: 'FIT'
+                    }
+                ]
+            }
+
+            generateFrame(){
+                this._frame.x = setX()
+                this._frame.y = setY()
+                this._frame.resize(475, 400)
+                let currentIndex = linksArray.indexOf(this);
+                let currentFrameName = pluArray[currentIndex]
+                if (typeof currentFrameName === "string") {
+                    this._frame.name = currentFrameName
+                }
+                this._frame.layoutMode = 'HORIZONTAL'
+                this._frame.horizontalPadding = 40
+                this._frame.counterAxisAlignItems = 'CENTER'
+                this._frame.appendChild(this._rectangleObject)
             }
         }
 
