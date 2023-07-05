@@ -3,19 +3,6 @@ figma.showUI(__html__, {
     height: 360,
 });
 
-const card = {
-    name: '',
-    frame: {
-        width: '',
-        height: '',
-    },
-    image: {
-        width: '',
-        height: '',
-        src: '',
-    },
-}
-
 figma.ui.onmessage = pluginMessage => {
 
     (async () => {
@@ -23,7 +10,6 @@ figma.ui.onmessage = pluginMessage => {
         const pluArr = pluginMessage.namesArr;
         const linkArr = pluginMessage.linkArr;
         const errorsArr: any[] = []
-        const counter = pluginMessage.handleXCounter
 
         /////////////синхронный запрос///////////////
         let iterLinksArray = linkArr[Symbol.iterator]();
@@ -115,8 +101,8 @@ figma.ui.onmessage = pluginMessage => {
             }
         }
 
-        class CreateErrorMessage{
-            async createErrorMessage(defaultErrMessage){
+        class CreateErrorMessage {
+            async createErrorMessage(defaultErrMessage) {
                 const errorText = await figma.createText()
                 await figma.loadFontAsync({family: "Inter", style: "Regular"})
                 errorText.resize(395, 320)
@@ -138,25 +124,26 @@ figma.ui.onmessage = pluginMessage => {
                 handleXCounter()
                 handleYCounter()
 
+                const newFrame = new CreateFrame
+
                 try {
 
-                    const newRectangle = new CreateRectangle()
-                    const newImage = new CreateImage()
-                    const newFrame = new CreateFrame()
+                    const newRectangle = new CreateRectangle
+                    const newImage = new CreateImage
 
                     const image = await newImage.createImageAsync(elem)
                     const rectangleWithImage = newRectangle.createRectangle(image)
-                    const frameWithFilling = newFrame.createFrame(rectangleWithImage, elem)
+
+                    newFrame.createFrame(rectangleWithImage, elem)
 
                 } catch (err) {
 
                     errorsArr.push(err)
 
-                    const newFrame = new CreateFrame()
-                    const newError = new CreateErrorMessage()
-
+                    const newError = new CreateErrorMessage
                     const error = await newError.createErrorMessage(err)
-                    const frameWithError = newFrame.createFrame(error, elem)
+
+                    newFrame.createFrame(error, elem)
                 }
             }
         }
