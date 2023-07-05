@@ -16,63 +16,6 @@ const card = {
     },
 }
 
-// class Card {
-//     private _name: any;
-//     private _image: any;
-//     private _imgLink: Image;
-//     private _rectangleObject: RectangleNode;
-//     private _frame: FrameNode;
-//
-//     async constructor(name, image, linksArray, pluArray) {
-//         this._name = name;
-//         this._image = image;
-//         this._imgLink = await figma.createImageAsync(this._image)
-//         this._rectangleObject = figma.createRectangle()
-//         this._frame = figma.createFrame();
-//     }
-//
-//     // _generateRectangleObject() {
-//     //     return {
-//     //         rectangleObject: this.rectangleObject,
-//     //     }
-//     // }
-//
-//     generateRectangleObject() {
-//         this._rectangleObject.resize(395, 320)
-//         this._rectangleObject.fills = [
-//             {
-//                 type: 'IMAGE',
-//                 imageHash: this._imgLink.hash,
-//                 scaleMode: 'FIT'
-//             }
-//         ]
-//     }
-//
-//     generateFrame(){
-//         this._frame.x = setX()
-//         this._frame.y = setY()
-//         this._frame.resize(475, 400)
-//         let currentIndex = linksArray.indexOf(this);
-//         let currentFrameName = pluArray[currentIndex]
-//         if (typeof currentFrameName === "string") {
-//             this._frame.name = currentFrameName
-//         }
-//         this._frame.layoutMode = 'HORIZONTAL'
-//         this._frame.horizontalPadding = 40
-//         this._frame.counterAxisAlignItems = 'CENTER'
-//         this._frame.appendChild(this._rectangleObject)
-//     }
-// }
-
-// rectangleObject.resize(395, 320)
-// rectangleObject.fills = [
-//     {
-//         type: 'IMAGE',
-//         imageHash: imgLink.hash,
-//         scaleMode: 'FIT'
-//     }
-// ]
-
 figma.ui.onmessage = pluginMessage => {
 
     (async () => {
@@ -136,66 +79,12 @@ figma.ui.onmessage = pluginMessage => {
         const setX = setXPos()
         const setY = setYPos()
 
-        // class Card {
-        //     private _name: any;
-        //     private readonly _image: any;
-        //     private _imgLink: Image;
-        //     private readonly _rectangleObject: RectangleNode;
-        //     private _frame: FrameNode;
-        //
-        //     constructor(
-        //         // name,
-        //         // image,
-        //         // linksArray,
-        //         // pluArray
-        //     ) {
-        //         //this._name = name;
-        //         //this._image = image;
-        //         this._imgLink = await figma.createImageAsync(this._image)
-        //         this._rectangleObject = figma.createRectangle()
-        //         this._frame = figma.createFrame();
-        //     }
-        //
-        //     // _generateRectangleObject() {
-        //     //     return {
-        //     //         rectangleObject: this.rectangleObject,
-        //     //     }
-        //     // }
-        //
-        //     generateRectangleObject() {
-        //         this._rectangleObject.resize(395, 320)
-        //         this._rectangleObject.fills = [
-        //             {
-        //                 type: 'IMAGE',
-        //                 imageHash: this._imgLink.hash,
-        //                 scaleMode: 'FIT'
-        //             }
-        //         ]
-        //     }
-        //
-        //     generateFrame(){
-        //         this._frame.x = setX()
-        //         this._frame.y = setY()
-        //         this._frame.resize(475, 400)
-        //         let currentIndex = linksArray.indexOf(this);
-        //         let currentFrameName = pluArray[currentIndex]
-        //         if (typeof currentFrameName === "string") {
-        //             this._frame.name = currentFrameName
-        //         }
-        //         this._frame.layoutMode = 'HORIZONTAL'
-        //         this._frame.horizontalPadding = 40
-        //         this._frame.counterAxisAlignItems = 'CENTER'
-        //         this._frame.appendChild(this._rectangleObject)
-        //     }
-        // }
-
         class CreateRectangle {
             createRectangle(imageData) {
                 const rect = figma.createRectangle();
                 if (imageData) {
                     rect.resize(395, 320);
-                    //rect.resize(imageData.width, imageData.height);
-                    rect.fills = [{ type: 'IMAGE', imageHash: imageData.hash, scaleMode: 'FIT' }];
+                    rect.fills = [{type: 'IMAGE', imageHash: imageData.hash, scaleMode: 'FIT'}];
                 }
                 return rect;
             }
@@ -204,10 +93,39 @@ figma.ui.onmessage = pluginMessage => {
         class CreateImage extends CreateRectangle {
             async createImageAsync(imageData) {
                 const image = await figma.createImageAsync(imageData);
-                //const { width, height } = await image.getSizeAsync();
                 return {hash: image.hash};
-                //return {hash: image.hash, width, height};
-                //return image
+            }
+        }
+
+        class CreateFrame {
+            createFrame(filling, namesArray) {
+                const frame = figma.createFrame();
+                frame.x = setX()
+                frame.y = setY()
+                frame.resize(475, 400)
+                let currentIndex = linksArray.indexOf(namesArray);
+                let currentFrameName = pluArray[currentIndex]
+                if (typeof currentFrameName === "string") {
+                    frame.name = currentFrameName
+                }
+                frame.layoutMode = 'HORIZONTAL'
+                frame.horizontalPadding = 40
+                frame.counterAxisAlignItems = 'CENTER'
+                frame.appendChild(filling)
+            }
+        }
+
+        class CreateErrorMessage{
+            async createErrorMessage(defaultErrMessage){
+                const errorText = await figma.createText()
+                await figma.loadFontAsync({family: "Inter", style: "Regular"})
+                errorText.resize(395, 320)
+                errorText.x = 0
+                errorText.y = 0
+                errorText.characters = ('ERROR:' + '\n' + (defaultErrMessage))
+                errorText.fontSize = 24
+                errorText.fills = [{type: 'SOLID', color: {r: 1, g: 0, b: 0}}]
+                return errorText
             }
         }
 
@@ -220,78 +138,25 @@ figma.ui.onmessage = pluginMessage => {
                 handleXCounter()
                 handleYCounter()
 
-                // let currentIndex = linksArray.indexOf(elem);
-                // console.log(currentIndex)
-                // let currentFrameName = pluArray[currentIndex]
-
                 try {
 
                     const newRectangle = new CreateRectangle()
                     const newImage = new CreateImage()
+                    const newFrame = new CreateFrame()
+
                     const image = await newImage.createImageAsync(elem)
-                    newRectangle.createRectangle(image)
-                    console.log(image)
+                    const rectangleWithImage = newRectangle.createRectangle(image)
+                    const frameWithFilling = newFrame.createFrame(rectangleWithImage, elem)
 
-
-
-                    //elem = new Card()
-
-                    //
-                    // let imgLink = await figma.createImageAsync(elem)
-                    // console.log(imgLink)
-                    // const rectangleObject = figma.createRectangle()
-                    // rectangleObject.resize(395, 320)
-                    // rectangleObject.fills = [
-                    //     {
-                    //         type: 'IMAGE',
-                    //         imageHash: imgLink.hash,
-                    //         scaleMode: 'FIT'
-                    //     }
-                    // ]
-                    //
-                    // const frame = figma.createFrame();
-                    // frame.x = setX()
-                    // frame.y = setY()
-                    // frame.resize(475, 400)
-                    // let currentIndex = linksArray.indexOf(elem);
-                    // console.log(currentIndex)
-                    // let currentFrameName = pluArray[currentIndex]
-                    // console.log(currentFrameName)
-                    // if (typeof currentFrameName === "string") {
-                    //     frame.name = currentFrameName
-                    // }
-                    // frame.layoutMode = 'HORIZONTAL'
-                    // frame.horizontalPadding = 40
-                    // frame.counterAxisAlignItems = 'CENTER'
-                    // frame.appendChild(rectangleObject)
                 } catch (err) {
 
                     errorsArr.push(err)
 
-                    const errorText = await figma.createText()
-                    await figma.loadFontAsync({family: "Inter", style: "Regular"})
-                    errorText.resize(395, 320)
-                    errorText.x = 0
-                    errorText.y = 0
-                    errorText.characters = ('ERROR:' + '\n' + (err))
-                    errorText.fontSize = 24
-                    errorText.fills = [{type: 'SOLID', color: {r: 1, g: 0, b: 0}}]
+                    const newFrame = new CreateFrame()
+                    const newError = new CreateErrorMessage()
 
-                    const frame = figma.createFrame();
-                    frame.x = setX()
-                    frame.y = setY()
-                    frame.resize(475, 400)
-                    let currentIndex = linksArray.indexOf(elem);
-
-                    let currentFrameName = pluArray[currentIndex]
-
-                    if (typeof currentFrameName === "string") {
-                        frame.name = currentFrameName
-                    }
-                    frame.layoutMode = 'HORIZONTAL'
-                    frame.horizontalPadding = 40
-                    frame.counterAxisAlignItems = 'CENTER'
-                    frame.appendChild(errorText)
+                    const error = await newError.createErrorMessage(err)
+                    const frameWithError = newFrame.createFrame(error, elem)
                 }
             }
         }
