@@ -1,7 +1,7 @@
 {
   "name": "Image collector",
-  "version": "1.0.0",
-  "description": "Your Figma Plugin",
+  "version": "1.1.0",
+  "description": "Image collector",
   "main": "code.js",
   "scripts": {
     "build": "webpack",
