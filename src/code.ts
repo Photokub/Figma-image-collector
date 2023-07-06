@@ -1,3 +1,5 @@
+import {text} from "stream/consumers";
+
 figma.showUI(__html__, {
     width: 500,
     height: 360,
@@ -101,10 +103,17 @@ figma.ui.onmessage = pluginMessage => {
             }
         }
 
-        class CreateErrorMessage {
-            async createErrorMessage(defaultErrMessage) {
-                const errorText = await figma.createText()
+        class CreateText{
+            async createText(){
+                const text = await figma.createText()
                 await figma.loadFontAsync({family: "Inter", style: "Regular"})
+                return text
+            }
+        }
+
+        class CreateErrorMessage extends CreateText{
+            async createErrorMessage(defaultErrMessage) {
+                const errorText = await this.createText()
                 errorText.resize(395, 320)
                 errorText.x = 0
                 errorText.y = 0
@@ -137,7 +146,6 @@ figma.ui.onmessage = pluginMessage => {
                     newFrame.createFrame(rectangleWithImage, elem)
 
                 } catch (err) {
-
                     errorsArr.push(err)
 
                     const newError = new CreateErrorMessage
@@ -148,8 +156,8 @@ figma.ui.onmessage = pluginMessage => {
             }
         }
 
-        const log = await figma.createText()
-        await figma.loadFontAsync({family: "Inter", style: "Regular"})
+        const newLog = new CreateText()
+        const log = await newLog.createText()
         log.x = 50
         log.y = -50
         log.characters = (`Количество обработанных имён: ${pluArray.length}. \nКоличество обработанных ссылок: ${linksArray.length}. \nКоличество ошибок: ${errorsArr.length}`)
