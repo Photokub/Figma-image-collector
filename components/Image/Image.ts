@@ -1,4 +1,4 @@
-import {CreateRectangle} from "./Rectangle";
+import {CreateRectangle} from "../Rectangle/Rectangle";
 
 export class CreateImage extends CreateRectangle {
     async createImageAsync(imageData) {

@@ -1,4 +1,4 @@
-import {CreateText} from "./Text";
+import {CreateText} from "../Text/Text";
 
 export class CreateErrorMessage extends CreateText {
     async createErrorMessage(defaultErrMessage) {

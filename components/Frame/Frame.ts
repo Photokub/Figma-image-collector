@@ -1,4 +1,4 @@
-import {setYPos, setXPos} from "../utils/positionSetter";
+import {setYPos, setXPos} from "../../utils/positionSetter";
 
 const setX = setXPos()
 const setY = setYPos()

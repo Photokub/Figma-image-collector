@@ -103,11 +103,18 @@
             padding-top: 15px;
         }
 
+        svg{
+            width: 100px;
+            height: 100px;
+            margin: calc(50vh - (100px / 2));
+            display:inline-block;
+        }
+
 
     </style>
 </head>
 <body class="app">
-<section class="app">
+<section class="app" id="app">
     <h1 class="app__header">Image collector</h1>
     <form class="form" id="form">
         <input id="names_field" placeholder="Names" class="form__input">
@@ -122,6 +129,7 @@
 </section>
 </body>
 
+<script src="components/Preloader/Preloader.ts"></script>
 <script>
 
     const form = document.getElementById('form')
@@ -131,12 +139,17 @@
     const namesInput = document.getElementById('names_field')
     const errorSpan = document.querySelector('.form__error')
 
+    window.onload = function () {
+        document.body.classList.add('loaded');
+    }
+
     function handleData(names, link) {
         const namesValue = names.value
         const linkValue = link.value
 
         const namesArr = namesValue.split(' ')
         const linkArr = linkValue.split(' ')
+
 
         parent.postMessage({pluginMessage: {namesValue, linkValue, namesArr, linkArr}}, '*')
     }
@@ -177,6 +190,34 @@
         }
     }
 
+    function showPreloader() {
+        document.body.innerHTML = '<svg version="1.1" id="L6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"\n' +
+            '  viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">\n' +
+            '   <rect fill="none" stroke="#d7d7d7" stroke-width="4" x="25" y="25" width="50" height="50">\n' +
+            '  <animateTransform\n' +
+            '     attributeName="transform"\n' +
+            '     dur="0.5s"\n' +
+            '     from="0 50 50"\n' +
+            '     to="180 50 50"\n' +
+            '     type="rotate"\n' +
+            '     id="strokeBox"\n' +
+            '     attributeType="XML"\n' +
+            '     begin="rectBox.end"/>\n' +
+            '  </rect>\n' +
+            '   <rect x="27" y="27" fill="#d7d7d7" width="46" height="50">\n' +
+            '  <animate\n' +
+            '     attributeName="height"\n' +
+            '     dur="1s"\n' +
+            '     attributeType="XML"\n' +
+            '     from="50" \n' +
+            '     to="0"\n' +
+            '     id="rectBox" \n' +
+            '     fill="freeze"\n' +
+            '     begin="0s;strokeBox.end"/>\n' +
+            '  </rect>\n' +
+            '</svg>';
+    }
+
     linkInput.oninput = function () {
         validData()
     }
@@ -192,6 +233,7 @@
     }
 
     createBtn.onclick = () => {
+        showPreloader()
         handleData(namesInput, linkInput)
     }
 
